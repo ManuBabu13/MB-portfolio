@@ -1,29 +1,61 @@
-// const form=document.getElementById('contact-form');
-// const Name=document.getElementById('Name');
-// const email=document.getElementById('email');
-// const phone=document.getElementById('phone');
 
-// const name_error=document.getElementById('name_error');
-// const email_error=document.getElementById('email_error');
+emailjs.init("Q0E7mOuLLGtVrhcNr");  // Replace with your actual EmailJS user ID
 
-// contact-form.addEventListener('submit',(e) => {
+// Validation function
+function validateForm() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-//    var email_check =  (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
-//    if (Name.value === '' || Name.value==null )
-//    {
-//       e.preventDefault();
-//       name_error.innerHTML = "Name is requred";
-//    }
-//    if (!email.value.match(email_check)){
-//       e.preventDefault();
-//       email_error.innerHTML = "Valid email is required";
+    if (name === "") {
+        alert("Please enter your name.");
+        return false;
+    }
+    if (email === "" || !emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+    if (message === "") {
+        alert("Please enter a message.");
+        return false;
+    }
+    return true;
+}
 
-//    }
+// Email sending function
+function sendmail() {
+    const params = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+    };
 
-   
-// })
+    const serviceId = "service_z5p0eb5";
+    const templateId = "template_qtnzgyw";
 
+    emailjs.send(serviceId, templateId, params)
+        .then((res) => {
+            console.log(res);
+            alert("Message sent successfully");
 
+            // Clear form fields
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("message").value = "";
+        })
+        .catch((err) => {
+            console.log(err);
+            alert("Failed to send message. Please try again.");
+        });
+}
+
+// Handle submit event
+function handleSubmit() {
+    if (validateForm()) {
+        sendmail();
+    }
+}
 
 
 
@@ -68,25 +100,3 @@
 //    if(NameValue=== ''){
 //       //show error
 //       //add error class
-//       setErrorFor(Name ,'Name cannot be blank');
-//    } else{
-//       //add success class
-//       setSuccessFor(Name);
-//    }
-
-// }
-// function setErrorFor(input,message){
-//    const formControl = input.parentElement;//.form-group
-//    const small = formControl.querySelector('small');
-
-//    //add error message inside small
-//    small.innerText=message;
-//    //add error class
-//    formControl.className = 'form-group ';
-// }
-// function setSuccessFor(input){
-//    const formControl = input.parentElement;//.form-group
-//    //add error class
-//    formControl.className = 'form-group';
-
-// }
